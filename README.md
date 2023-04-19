@@ -22,38 +22,130 @@ module "aws-eks" {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- kubernetes (>=2.19.0)
 
 ## Providers
 
-No providers.
+The following providers are used by this module:
+
+- aws
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 19.10.0 |
+The following Modules are called:
+
+### eks
+
+Source: terraform-aws-modules/eks/aws
+
+Version: 19.10.0
 
 ## Resources
 
-No resources.
+The following resources are used by this module:
 
-## Inputs
+- [aws_eks_cluster_auth.k8s](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) (data source)
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_aws-auth-map-roles"></a> [aws-auth-map-roles](#input\_aws-auth-map-roles) | Desired content of the aws-auth configmap | `string` | n/a | yes |
-| <a name="input_k8s_version"></a> [k8s\_version](#input\_k8s\_version) | Kubernetes version to use on EKS | `string` | `"1.16"` | no |
-| <a name="input_nodegroups"></a> [nodegroups](#input\_nodegroups) | List of Nodegroup configurations<br><br>* suffix: Nodegroup name suffix<br>* subnet\_ids: Ids of used subnets in the nodegroup<br>* scaling: Scaling configuration<br>  * desired: Desired number of nodes<br>  * min: Minimum number of nodes<br>  * max: Maximum number of nodes<br>* disk\_size: Disk size in GB<br>* instance\_type: Instance type of the nodes} | <pre>list(object({<br>    suffix : string,<br>    subnet_ids : list(string),<br>    scaling : object({<br>      min : number,<br>      max : number,<br>      desired : number<br>    }),<br>    disk_size : number,<br>    instance_type : string<br>  }))</pre> | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | Project this configuration is for | `any` | n/a | yes |
-| <a name="input_stage"></a> [stage](#input\_stage) | Name of the stage for this state | `string` | n/a | yes |
-| <a name="input_subnet_cidrs"></a> [subnet\_cidrs](#input\_subnet\_cidrs) | List of IDs of subnets to use in the EKS | `list(string)` | n/a | yes |
-| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of IDs of subnets to use in the EKS | `list(string)` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC the cluster is in | `string` | n/a | yes |
+## Required Inputs
+
+The following input variables are required:
+
+### aws-auth-map-roles
+
+Description: Desired content of the [aws-auth configmap](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)
+
+Type: `list(any)`
+
+### k8s\_version
+
+Description: [Kubernetes version](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html) to use for the EKS cluster.
+
+Type: `string`
+
+### nodegroups
+
+Description: List of Nodegroup configurations
+
+* suffix: Nodegroup name suffix
+* subnet\_ids: Ids of used subnets in the nodegroup
+* scaling: Scaling configuration
+  * desired: Desired number of nodes
+  * min: Minimum number of nodes
+  * max: Maximum number of nodes
+* disk\_size: Disk size in GB
+* instance\_type: Instance type of the nodes}
+
+Type:
+
+```hcl
+list(object({
+    suffix : string,
+    subnet_ids : list(string),
+    scaling : object({
+      min : number,
+      max : number,
+      desired : number
+    }),
+    disk_size : number,
+    instance_type : string
+  }))
+```
+
+### project
+
+Description: Project this configuration is for
+
+Type: `any`
+
+### stage
+
+Description: Name of the stage for this state
+
+Type: `string`
+
+### subnet\_cidrs
+
+Description: List of IDs of subnets to use in the EKS
+
+Type: `list(string)`
+
+### subnet\_ids
+
+Description: List of IDs of subnets to use in the EKS
+
+Type: `list(string)`
+
+### vpc\_id
+
+Description: ID of the VPC the cluster is in
+
+Type: `string`
+
+## Optional Inputs
+
+No optional inputs.
 
 ## Outputs
 
-No outputs.
+The following outputs are exported:
+
+### ca\_certificate
+
+Description: CA certificate of the EKS endpoint
+
+### host
+
+Description: EKS cluster endpoint
+
+### oidc\_provider
+
+Description: OIDC provider used by the EKS
+
+### token
+
+Description: Auth token for the EKS endpoint
 <!-- END_TF_DOCS -->
 
 ## Development
@@ -61,4 +153,4 @@ No outputs.
 Use [terraform-docs](https://terraform-docs.io/) to generate the API documentation by running
 
     terraform fmt .
-    terraform-docs markdown . --output-file README.md
+    terraform-docs .

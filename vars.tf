@@ -24,8 +24,7 @@ variable "vpc_id" {
 
 variable "k8s_version" {
   type        = string
-  description = "Kubernetes version to use on EKS"
-  default     = "1.16"
+  description = "[Kubernetes version](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html) to use for the EKS cluster."
 }
 
 variable "nodegroups" {
@@ -55,6 +54,6 @@ EOL
 }
 
 variable "aws-auth-map-roles" {
-  type        = string
-  description = "Desired content of the aws-auth configmap"
+  type        = list(any)
+  description = "Desired content of the [aws-auth configmap](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)"
 }
